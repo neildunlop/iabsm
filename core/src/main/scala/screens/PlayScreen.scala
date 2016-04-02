@@ -1,6 +1,7 @@
 package screens
 
-import com.badlogic.gdx.graphics.{OrthographicCamera, GL20}
+import com.badlogic.gdx.graphics.g2d.Sprite
+import com.badlogic.gdx.graphics.{Texture, OrthographicCamera, GL20}
 import com.badlogic.gdx.{Input, InputProcessor, Gdx, Screen}
 import com.badlogic.gdx.maps.tiled.{TmxMapLoader, TiledMap}
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
@@ -13,6 +14,7 @@ class PlayScreen extends Screen with InputProcessor {
     var map: TiledMap = null
     var renderer: OrthogonalTiledMapRenderer = null
     var camera: OrthographicCamera = null
+    var player: Player = null
 
     override def hide(): Unit = {
         dispose()
@@ -28,6 +30,7 @@ class PlayScreen extends Screen with InputProcessor {
     override def dispose(): Unit = {
         map.dispose()
         renderer.dispose()
+        player.getTexture.dispose()
     }
 
     override def pause(): Unit = {
@@ -41,6 +44,10 @@ class PlayScreen extends Screen with InputProcessor {
         camera.update();
         renderer.setView(camera);
         renderer.render();
+
+        renderer.getSpriteBatch.begin()
+        player.draw(renderer.getSpriteBatch)
+        renderer.getSpriteBatch.end()
     }
 
     override def show(): Unit = {
@@ -51,9 +58,12 @@ class PlayScreen extends Screen with InputProcessor {
         camera = new OrthographicCamera();
         camera.setToOrtho(false,w,h);
         camera.update();
+
         map = new TmxMapLoader().load("/Users/neild/Dev/iabsm/core/src/main/resources/desert.tmx");
         renderer = new OrthogonalTiledMapRenderer(map);
         Gdx.input.setInputProcessor(this);
+
+        player = new Player(new Sprite(new Texture("/Users/neild/Dev/iabsm/core/src/main/resources/player.png")))
     }
 
     override def resume(): Unit = {
