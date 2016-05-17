@@ -15,6 +15,12 @@ class PlayScreen extends Screen with InputProcessor {
     var renderer: OrthogonalTiledMapRenderer = null
     var camera: OrthographicCamera = null
     var player: Player = null
+    var playerSprite: Sprite = null
+
+    var playerSpeed: Float = 30.0f // 10 pixels per second.
+    var playerX: Float = 500f
+    var playerY: Float = 500f
+    var playerRotation: Int = 0
 
     override def hide(): Unit = {
         dispose()
@@ -38,6 +44,25 @@ class PlayScreen extends Screen with InputProcessor {
     }
 
     override def render(delta: Float): Unit = {
+
+        if(Gdx.input.isKeyPressed(Input.Keys.A)) {
+            playerX -= Gdx.graphics.getDeltaTime() * playerSpeed
+            player.setX(playerX)
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.D)) {
+            playerX += Gdx.graphics.getDeltaTime() * playerSpeed
+            player.setX(playerX)
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.S)) {
+            playerY -= Gdx.graphics.getDeltaTime() * playerSpeed
+            player.setY(playerY)
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.W)) {
+            playerY += Gdx.graphics.getDeltaTime() * playerSpeed
+            player.setY(playerY)
+        }
+
+
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -63,7 +88,11 @@ class PlayScreen extends Screen with InputProcessor {
         renderer = new OrthogonalTiledMapRenderer(map);
         Gdx.input.setInputProcessor(this);
 
-        player = new Player(new Sprite(new Texture("/Users/neild/Dev/iabsm/core/src/main/resources/player.png")))
+
+        playerSprite = new Sprite(new Texture("/Users/neild/Dev/iabsm/core/src/main/resources/tankBase.png"))
+        playerSprite.setOrigin(playerSprite.getWidth()/2, playerSprite.getHeight/2)
+
+        player = new Player(playerSprite)
     }
 
     override def resume(): Unit = {
@@ -89,13 +118,21 @@ class PlayScreen extends Screen with InputProcessor {
     override def keyUp(keycode: Int): Boolean = {
 
         if(keycode == Input.Keys.A)
-            camera.translate(-32,0);
+            playerX -= Gdx.graphics.getDeltaTime() * playerSpeed
+            player.setX(playerX)
+            //camera.translate(-32,0);
         if(keycode == Input.Keys.D)
-            camera.translate(32,0);
+            playerX += Gdx.graphics.getDeltaTime() * playerSpeed
+            player.setX(playerX)
+            //camera.translate(32,0);
         if(keycode == Input.Keys.W)
-            camera.translate(0,-32);
+            playerY -= Gdx.graphics.getDeltaTime() * playerSpeed
+            player.setY(playerY)
+            //camera.translate(0,-32);
         if(keycode == Input.Keys.S)
-            camera.translate(0,32);
+            playerY += Gdx.graphics.getDeltaTime() * playerSpeed
+            player.setY(playerY)
+        //camera.translate(0,32);
         if(keycode == Input.Keys.NUM_1)
             map.getLayers().get(0).setVisible(!map.getLayers().get(0).isVisible());
 //        if(keycode == Input.Keys.NUM_2)

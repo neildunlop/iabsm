@@ -18,19 +18,19 @@ class Player(sprite: Sprite) extends Sprite(sprite) {
 
     def update(deltaTime: Float) = {
         //calcualte the new position of the player according to speed and gravity
-        velocity.y -= gravity*deltaTime  //I dont care about gravity! :)
-
-        //clamp velocity
-        if(velocity.y>speed) {
-            velocity.y = speed
-        }
-        else if(velocity.y<speed) {
-            velocity.y = -speed
-        }
-        setX(getX+velocity.x*deltaTime)
-        setY(getY+velocity.y*deltaTime)
-//        setX(500)
-//        setY(500)
+//        velocity.y -= gravity*deltaTime  //I dont care about gravity! :)
+//
+//        //clamp velocity
+//        if(velocity.y>speed) {
+//            velocity.y = speed
+//        }
+//        else if(velocity.y<speed) {
+//            velocity.y = -speed
+//        }
+//        setX(getX+velocity.x*deltaTime)
+//        setY(getY+velocity.y*deltaTime)
+////        setX(500)
+////        setY(500)
     }
 
 
