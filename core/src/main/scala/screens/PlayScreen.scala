@@ -1,7 +1,6 @@
 package screens
 
-import com.badlogic.gdx.graphics.g2d.Sprite
-import com.badlogic.gdx.graphics.{Texture, OrthographicCamera, GL20}
+import com.badlogic.gdx.graphics.{OrthographicCamera, GL20}
 import com.badlogic.gdx.{Input, InputProcessor, Gdx, Screen}
 import com.badlogic.gdx.maps.tiled.{TmxMapLoader, TiledMap}
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
@@ -14,13 +13,8 @@ class PlayScreen extends Screen with InputProcessor {
     var map: TiledMap = null
     var renderer: OrthogonalTiledMapRenderer = null
     var camera: OrthographicCamera = null
-    var player: Player = null
-    var playerSprite: Sprite = null
 
-    var playerSpeed: Float = 30.0f // 10 pixels per second.
-    var playerX: Float = 500f
-    var playerY: Float = 500f
-    var playerRotation: Int = 0
+    var player: Player = null
 
     override def hide(): Unit = {
         dispose()
@@ -36,7 +30,7 @@ class PlayScreen extends Screen with InputProcessor {
     override def dispose(): Unit = {
         map.dispose()
         renderer.dispose()
-        player.getTexture.dispose()
+        player.dispose()
     }
 
     override def pause(): Unit = {
@@ -46,22 +40,24 @@ class PlayScreen extends Screen with InputProcessor {
     override def render(delta: Float): Unit = {
 
         if(Gdx.input.isKeyPressed(Input.Keys.A)) {
-            playerX -= Gdx.graphics.getDeltaTime() * playerSpeed
-            player.setX(playerX)
+            player.moveLeft()
         }
         if(Gdx.input.isKeyPressed(Input.Keys.D)) {
-            playerX += Gdx.graphics.getDeltaTime() * playerSpeed
-            player.setX(playerX)
+            player.moveRight()
         }
         if(Gdx.input.isKeyPressed(Input.Keys.S)) {
-            playerY -= Gdx.graphics.getDeltaTime() * playerSpeed
-            player.setY(playerY)
+            player.moveDown()
         }
         if(Gdx.input.isKeyPressed(Input.Keys.W)) {
-            playerY += Gdx.graphics.getDeltaTime() * playerSpeed
-            player.setY(playerY)
+            player.moveUp()
         }
 
+        if(Gdx.input.isKeyPressed(Input.Keys.L)) {
+            player.turretClockwise()
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.K)) {
+            player.turretAntiClockwise()
+        }
 
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -89,10 +85,7 @@ class PlayScreen extends Screen with InputProcessor {
         Gdx.input.setInputProcessor(this);
 
 
-        playerSprite = new Sprite(new Texture("/Users/neild/Dev/iabsm/core/src/main/resources/tankBase.png"))
-        playerSprite.setOrigin(playerSprite.getWidth()/2, playerSprite.getHeight/2)
-
-        player = new Player(playerSprite)
+        player = new Player()
     }
 
     override def resume(): Unit = {
@@ -117,26 +110,26 @@ class PlayScreen extends Screen with InputProcessor {
 
     override def keyUp(keycode: Int): Boolean = {
 
-        if(keycode == Input.Keys.A)
-            playerX -= Gdx.graphics.getDeltaTime() * playerSpeed
-            player.setX(playerX)
-            //camera.translate(-32,0);
-        if(keycode == Input.Keys.D)
-            playerX += Gdx.graphics.getDeltaTime() * playerSpeed
-            player.setX(playerX)
-            //camera.translate(32,0);
-        if(keycode == Input.Keys.W)
-            playerY -= Gdx.graphics.getDeltaTime() * playerSpeed
-            player.setY(playerY)
-            //camera.translate(0,-32);
-        if(keycode == Input.Keys.S)
-            playerY += Gdx.graphics.getDeltaTime() * playerSpeed
-            player.setY(playerY)
-        //camera.translate(0,32);
-        if(keycode == Input.Keys.NUM_1)
-            map.getLayers().get(0).setVisible(!map.getLayers().get(0).isVisible());
-//        if(keycode == Input.Keys.NUM_2)
-//            map.getLayers().get(1).setVisible(!map.getLayers().get(1).isVisible());
+//        if(keycode == Input.Keys.A)
+//            playerX -= Gdx.graphics.getDeltaTime() * playerSpeed
+//            player.setX(playerX)
+//            //camera.translate(-32,0);
+//        if(keycode == Input.Keys.D)
+//            playerX += Gdx.graphics.getDeltaTime() * playerSpeed
+//            player.setX(playerX)
+//            //camera.translate(32,0);
+//        if(keycode == Input.Keys.W)
+//            playerY -= Gdx.graphics.getDeltaTime() * playerSpeed
+//            player.setY(playerY)
+//            //camera.translate(0,-32);
+//        if(keycode == Input.Keys.S)
+//            playerY += Gdx.graphics.getDeltaTime() * playerSpeed
+//            player.setY(playerY)
+//        //camera.translate(0,32);
+//        if(keycode == Input.Keys.NUM_1)
+//            map.getLayers().get(0).setVisible(!map.getLayers().get(0).isVisible());
+////        if(keycode == Input.Keys.NUM_2)
+////            map.getLayers().get(1).setVisible(!map.getLayers().get(1).isVisible());
         return false;
     }
 
