@@ -110,6 +110,8 @@ class PlayScreen extends Screen with InputProcessor {
 
     override def keyUp(keycode: Int): Boolean = {
 
+        player.stopSounds()
+        //this code moves the map
 //        if(keycode == Input.Keys.A)
 //            playerX -= Gdx.graphics.getDeltaTime() * playerSpeed
 //            player.setX(playerX)
