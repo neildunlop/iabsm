@@ -1,9 +1,9 @@
-package screens
+package entities
 
-import com.badlogic.gdx.{Input, Gdx}
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.{Batch, Sprite}
+import com.badlogic.gdx.{Gdx, Input}
 
 /**
   * We may want to split the logic for the player from the Sprite which is what we show on screen.
@@ -17,7 +17,7 @@ class Player() {
     var chassisRotation: Float = 0f
     var turretRotation: Float = 0f
     var rotationSpeed: Float = 180f
-    // degress per second
+    // degrees per second
 
     var engineSound: Sound = null
     var engineSoundPlaying: Boolean = false
@@ -27,11 +27,6 @@ class Player() {
     var turretSoundPlaying: Boolean = false
     var turretSoundId: Long = 0l
 
-    // the movement velocity
-    //var velocity: Vector2 = new Vector2()
-    //val speed: Float = 60*2
-    //val gravity: Float = 60 *1.8f
-
     var tankBaseSprite: Sprite = null
     var tankTurretSprite: Sprite = null
 
@@ -40,8 +35,8 @@ class Player() {
     tankBaseSprite.setOrigin(tankBaseSprite.getWidth() / 2, tankBaseSprite.getHeight / 2)
     tankTurretSprite.setOrigin(tankTurretSprite.getWidth() / 2, tankTurretSprite.getHeight / 2)
 
-    engineSound = Gdx.audio.newSound(Gdx.files.internal("/Users/neild/Dev/iabsm/core/src/main/resources/tankEngine.wav"));
-    turretSound = Gdx.audio.newSound(Gdx.files.internal("/Users/neild/Dev/iabsm/core/src/main/resources/turretSound.wav"));
+    engineSound = Gdx.audio.newSound(Gdx.files.internal("/Users/neild/Dev/iabsm/core/src/main/resources/tankEngine.wav"))
+    turretSound = Gdx.audio.newSound(Gdx.files.internal("/Users/neild/Dev/iabsm/core/src/main/resources/turretSound.wav"))
 
     tankBaseSprite.setX(500)
     tankBaseSprite.setY(500)
@@ -285,7 +280,6 @@ class Player() {
     }
 
     def rotateChassis(playerRotation: Float) = {
-        Console.println("Rotation" + playerRotation)
         tankBaseSprite.setRotation(-playerRotation)
     }
 

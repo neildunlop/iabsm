@@ -4,6 +4,9 @@ import com.badlogic.gdx.graphics.{OrthographicCamera, GL20}
 import com.badlogic.gdx.{Input, InputProcessor, Gdx, Screen}
 import com.badlogic.gdx.maps.tiled.{TmxMapLoader, TiledMap}
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
+import entities.{Bullet, Player}
+
+import scala.collection.mutable
 
 /**
   * Created by neild on 01/04/2016.
@@ -15,6 +18,8 @@ class PlayScreen extends Screen with InputProcessor {
     var camera: OrthographicCamera = null
 
     var player: Player = null
+    var bullets: mutable.ListBuffer[Bullet] = mutable.ListBuffer()
+
 
     override def hide(): Unit = {
         dispose()
@@ -31,10 +36,16 @@ class PlayScreen extends Screen with InputProcessor {
         map.dispose()
         renderer.dispose()
         player.dispose()
+        bullets.foreach(_.dispose())
     }
 
     override def pause(): Unit = {
 
+    }
+
+    def fireBullet() = {
+        val bullet = new Bullet(player.tankBaseSprite.getX, player.tankBaseSprite.getY, 360-player.turretRotation)
+        bullets += bullet
     }
 
     override def render(delta: Float): Unit = {
@@ -58,6 +69,9 @@ class PlayScreen extends Screen with InputProcessor {
         if(Gdx.input.isKeyPressed(Input.Keys.K)) {
             player.turretAntiClockwise()
         }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            fireBullet()
+        }
 
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -68,6 +82,14 @@ class PlayScreen extends Screen with InputProcessor {
 
         renderer.getSpriteBatch.begin()
         player.draw(renderer.getSpriteBatch)
+        bullets.foreach(_.draw(renderer.getSpriteBatch))
+
+        for(bullet <- bullets) {
+            if(bullet.shouldRemove) {
+                bullet.dispose()
+                bullets -= bullet
+            }
+        }
         renderer.getSpriteBatch.end()
     }
 
