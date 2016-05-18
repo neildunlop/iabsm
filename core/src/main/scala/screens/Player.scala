@@ -94,11 +94,11 @@ class Player() {
             //top left quadrant = turn left
             chassisRotation -= Gdx.graphics.getDeltaTime() * rotationSpeed
         }
-        else if (chassisRotation > 180f && chassisRotation < 269f) {
+        else if (chassisRotation >= 180f && chassisRotation < 269f) {
             //bottom left quadrant = turn right
             chassisRotation += Gdx.graphics.getDeltaTime() * rotationSpeed
         }
-        else if (chassisRotation > 90f && chassisRotation < 180f) {
+        else if (chassisRotation >= 90f && chassisRotation < 180f) {
             //bottom right quadrant = turn right
             chassisRotation += Gdx.graphics.getDeltaTime() * rotationSpeed
         }
@@ -126,7 +126,7 @@ class Player() {
             //top left quadrant = turn right
             chassisRotation += Gdx.graphics.getDeltaTime() * rotationSpeed
         }
-        else if (chassisRotation > 180f && chassisRotation < 270f) {
+        else if (chassisRotation >= 180f && chassisRotation < 270f) {
             //bottom left quadrant = turn left
             chassisRotation -= Gdx.graphics.getDeltaTime() * rotationSpeed
         }
@@ -146,7 +146,8 @@ class Player() {
         }
         rotateChassis(chassisRotation)
         if (chassisRotation > 89f && chassisRotation < 91f) {
-            rotateChassis(90f)
+            chassisRotation = 90f
+            rotateChassis(chassisRotation)
             playerX += Gdx.graphics.getDeltaTime() * playerSpeed
             setX(playerX)
         }
@@ -158,11 +159,11 @@ class Player() {
             //top left quadrant = turn right
             chassisRotation += Gdx.graphics.getDeltaTime() * rotationSpeed
         }
-        else if (chassisRotation > 180f && chassisRotation < 270f) {
+        else if (chassisRotation >= 180f && chassisRotation < 270f) {
             //bottom left quadrant = turn right
             chassisRotation += Gdx.graphics.getDeltaTime() * rotationSpeed
         }
-        else if (chassisRotation > 90f && chassisRotation < 180f) {
+        else if (chassisRotation >= 90f && chassisRotation < 180f) {
             //bottom right quadrant = turn left
             chassisRotation -= Gdx.graphics.getDeltaTime() * rotationSpeed
         }
@@ -191,11 +192,11 @@ class Player() {
             //top left quadrant = turn left
             chassisRotation -= Gdx.graphics.getDeltaTime() * rotationSpeed
         }
-        else if (chassisRotation > 180f && chassisRotation < 270f) {
+        else if (chassisRotation >= 181f && chassisRotation < 270f) {
             //bottom left quadrant = turn left
             chassisRotation -= Gdx.graphics.getDeltaTime() * rotationSpeed
         }
-        else if (chassisRotation > 90f && chassisRotation < 180f) {
+        else if (chassisRotation >= 90f && chassisRotation < 180f) {
             //bottom right quadrant = turn right
             chassisRotation += Gdx.graphics.getDeltaTime() * rotationSpeed
         }
@@ -212,7 +213,8 @@ class Player() {
         rotateChassis(chassisRotation)
 
         if (chassisRotation > 179f && chassisRotation < 181f) {
-            rotateChassis(180f)
+            chassisRotation = 180f
+            rotateChassis(chassisRotation)
             playerY -= Gdx.graphics.getDeltaTime() * playerSpeed
             setY(playerY)
         }
@@ -283,6 +285,7 @@ class Player() {
     }
 
     def rotateChassis(playerRotation: Float) = {
+        Console.println("Rotation" + playerRotation)
         tankBaseSprite.setRotation(-playerRotation)
     }
 
