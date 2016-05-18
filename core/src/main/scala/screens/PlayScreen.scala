@@ -44,7 +44,9 @@ class PlayScreen extends Screen with InputProcessor {
     }
 
     def fireBullet() = {
-        val bullet = new Bullet(player.tankBaseSprite.getX, player.tankBaseSprite.getY, 360-player.turretRotation)
+        val muzzlePosX = player.tankTurretSprite.getX+player.tankTurretSprite.getWidth/2
+        val muzzlePosY = player.tankTurretSprite.getY+(player.tankTurretSprite.getHeight/2)
+        val bullet = new Bullet(muzzlePosX, muzzlePosY, 360-player.turretRotation)
         bullets += bullet
     }
 
@@ -81,8 +83,10 @@ class PlayScreen extends Screen with InputProcessor {
         renderer.render();
 
         renderer.getSpriteBatch.begin()
-        player.draw(renderer.getSpriteBatch)
+
+        //order that we call draw determines Z-Order
         bullets.foreach(_.draw(renderer.getSpriteBatch))
+        player.draw(renderer.getSpriteBatch)
 
         for(bullet <- bullets) {
             if(bullet.shouldRemove) {
@@ -90,6 +94,7 @@ class PlayScreen extends Screen with InputProcessor {
                 bullets -= bullet
             }
         }
+
         renderer.getSpriteBatch.end()
     }
 
