@@ -8,7 +8,7 @@ import com.badlogic.gdx.{Gdx, Input}
 /**
   * We may want to split the logic for the player from the Sprite which is what we show on screen.
   */
-class Player() {
+class Player(baseSprite:Sprite, turretSprite:Sprite, startingX:Float, startingY:Float) {
 
     var playerSpeed: Float = 60.0f
     // pixels per second.
@@ -27,22 +27,22 @@ class Player() {
     var turretSoundPlaying: Boolean = false
     var turretSoundId: Long = 0l
 
-    var tankBaseSprite: Sprite = null
-    var tankTurretSprite: Sprite = null
+    var tankBaseSprite: Sprite = baseSprite
+    var tankTurretSprite: Sprite = turretSprite
 
-    tankBaseSprite = new Sprite(new Texture("/Users/neild/Dev/iabsm/core/src/main/resources/tankBase.png"))
-    tankTurretSprite = new Sprite(new Texture("/Users/neild/Dev/iabsm/core/src/main/resources/tankTurret.png"))
+//    tankBaseSprite = new Sprite(new Texture("/Users/neild/Dev/iabsm/core/src/main/resources/tankBaseGrey.png"))
+//    tankTurretSprite = new Sprite(new Texture("/Users/neild/Dev/iabsm/core/src/main/resources/tankTurretGrey.png"))
     tankBaseSprite.setOrigin(tankBaseSprite.getWidth() / 2, tankBaseSprite.getHeight / 2)
     tankTurretSprite.setOrigin(tankTurretSprite.getWidth() / 2, tankTurretSprite.getHeight / 2)
 
     engineSound = Gdx.audio.newSound(Gdx.files.internal("/Users/neild/Dev/iabsm/core/src/main/resources/tankEngine.wav"))
     turretSound = Gdx.audio.newSound(Gdx.files.internal("/Users/neild/Dev/iabsm/core/src/main/resources/turretSound.wav"))
 
-    tankBaseSprite.setX(500)
-    tankBaseSprite.setY(500)
+    tankBaseSprite.setX(startingX)
+    tankBaseSprite.setY(startingY)
 
-    tankTurretSprite.setX(500)
-    tankTurretSprite.setY(500)
+    tankTurretSprite.setX(startingX)
+    tankTurretSprite.setY(startingY)
 
     def playEngineSound() = {
         if (!engineSoundPlaying) {
@@ -234,20 +234,7 @@ class Player() {
     }
 
     def update(deltaTime: Float) = {
-        //calcualte the new position of the player according to speed and gravity
-        //        velocity.y -= gravity*deltaTime  //I dont care about gravity! :)
-        //
-        //        //clamp velocity
-        //        if(velocity.y>speed) {
-        //            velocity.y = speed
-        //        }
-        //        else if(velocity.y<speed) {
-        //            velocity.y = -speed
-        //        }
-        //        setX(getX+velocity.x*deltaTime)
-        //        setY(getY+velocity.y*deltaTime)
-        ////        setX(500)
-        ////        setY(500)
+
     }
 
 

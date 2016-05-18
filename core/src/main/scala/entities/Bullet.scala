@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.{Batch, Sprite}
-import com.badlogic.gdx.math.{MathUtils, Vector2}
+import com.badlogic.gdx.math.{Intersector, MathUtils, Vector2}
 
 /**
   * Created by neild on 18/05/2016.

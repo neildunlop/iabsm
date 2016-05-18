@@ -1,10 +1,12 @@
 package screens
 
-import com.badlogic.gdx.graphics.{OrthographicCamera, GL20}
+import com.badlogic.gdx.graphics.g2d.Sprite
+import com.badlogic.gdx.graphics.{Texture, OrthographicCamera, GL20}
+import com.badlogic.gdx.math.{Rectangle, Intersector}
 import com.badlogic.gdx.{Input, InputProcessor, Gdx, Screen}
 import com.badlogic.gdx.maps.tiled.{TmxMapLoader, TiledMap}
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
-import entities.{Bullet, Player}
+import entities.{Enemy, Bullet, Player}
 
 import scala.collection.mutable
 
@@ -18,6 +20,7 @@ class PlayScreen extends Screen with InputProcessor {
     var camera: OrthographicCamera = null
 
     var player: Player = null
+    var enemy1: Enemy = null
     var bullets: mutable.ListBuffer[Bullet] = mutable.ListBuffer()
 
 
@@ -36,6 +39,7 @@ class PlayScreen extends Screen with InputProcessor {
         map.dispose()
         renderer.dispose()
         player.dispose()
+        enemy1.dispose()
         bullets.foreach(_.dispose())
     }
 
@@ -87,11 +91,21 @@ class PlayScreen extends Screen with InputProcessor {
         //order that we call draw determines Z-Order
         bullets.foreach(_.draw(renderer.getSpriteBatch))
         player.draw(renderer.getSpriteBatch)
+        enemy1.draw(renderer.getSpriteBatch)
 
         for(bullet <- bullets) {
             if(bullet.shouldRemove) {
                 bullet.dispose()
                 bullets -= bullet
+            }
+
+            if(Intersector.intersectRectangles(bullet.bulletSprite.getBoundingRectangle, enemy1.tankBaseSprite.getBoundingRectangle, new Rectangle())) {
+                Console.println("Enemy Hit!")
+                bullet.dispose()
+                bullets -= bullet
+
+                //just leaves a big black hole
+                //enemy1.dispose()
             }
         }
 
@@ -111,8 +125,15 @@ class PlayScreen extends Screen with InputProcessor {
         renderer = new OrthogonalTiledMapRenderer(map);
         Gdx.input.setInputProcessor(this);
 
+        val playerBaseSprite = new Sprite(new Texture("/Users/neild/Dev/iabsm/core/src/main/resources/tankBase.png"))
+        val playerTurretSprite = new Sprite(new Texture("/Users/neild/Dev/iabsm/core/src/main/resources/tankTurret.png"))
 
-        player = new Player()
+        val enemyBaseSprite = new Sprite(new Texture("/Users/neild/Dev/iabsm/core/src/main/resources/tankBaseGrey.png"))
+        val enemyTurretSprite = new Sprite(new Texture("/Users/neild/Dev/iabsm/core/src/main/resources/tankTurretGrey.png"))
+
+
+        player = new Player(playerBaseSprite, playerTurretSprite, 500, 500)
+        enemy1 = new Enemy(enemyBaseSprite, enemyTurretSprite, 400, 400)
     }
 
     override def resume(): Unit = {
