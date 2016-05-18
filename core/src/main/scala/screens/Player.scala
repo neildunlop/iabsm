@@ -1,6 +1,6 @@
 package screens
 
-import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.{Input, Gdx}
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.{Batch, Sprite}
@@ -18,9 +18,14 @@ class Player() {
     var turretRotation: Float = 0f
     var rotationSpeed: Float = 180f
     // degress per second
+
     var engineSound: Sound = null
     var engineSoundPlaying: Boolean = false
     var engineSoundId: Long = 0l
+
+    var turretSound: Sound = null
+    var turretSoundPlaying: Boolean = false
+    var turretSoundId: Long = 0l
 
     // the movement velocity
     //var velocity: Vector2 = new Vector2()
@@ -36,6 +41,7 @@ class Player() {
     tankTurretSprite.setOrigin(tankTurretSprite.getWidth() / 2, tankTurretSprite.getHeight / 2)
 
     engineSound = Gdx.audio.newSound(Gdx.files.internal("/Users/neild/Dev/iabsm/core/src/main/resources/tankEngine.wav"));
+    turretSound = Gdx.audio.newSound(Gdx.files.internal("/Users/neild/Dev/iabsm/core/src/main/resources/turretSound.wav"));
 
     tankBaseSprite.setX(500)
     tankBaseSprite.setY(500)
@@ -46,7 +52,7 @@ class Player() {
     def playEngineSound() = {
         if (!engineSoundPlaying) {
             engineSoundPlaying = true
-            engineSoundId = engineSound.play(0.4f)
+            engineSoundId = engineSound.play(0.1f)
             engineSound.setLooping(engineSoundId, true)
         }
     }
@@ -59,8 +65,27 @@ class Player() {
         }
     }
 
-    def stopSounds() = {
-        stopEngineSound()
+    def playTurretSound() = {
+        if (!turretSoundPlaying) {
+            turretSoundPlaying = true
+            turretSoundId = turretSound.play(0.4f)
+            turretSound.setLooping(turretSoundId, true)
+        }
+    }
+
+    def stopTurretSound() = {
+        if (turretSoundPlaying) {
+            turretSoundPlaying = false
+            turretSound.stop(turretSoundId)
+            turretSound.setLooping(turretSoundId, false)
+        }
+    }
+
+    def stopSounds(keycode:Int) = keycode match {
+
+        case Input.Keys.W | Input.Keys.A | Input.Keys.S | Input.Keys.D => stopEngineSound()
+        case Input.Keys.K | Input.Keys.L => stopTurretSound()
+        case _ =>
     }
 
     def moveLeft() = {
@@ -194,7 +219,7 @@ class Player() {
     }
 
     def turretClockwise() = {
-
+        playTurretSound()
         turretRotation += Gdx.graphics.getDeltaTime() * rotationSpeed
         if (turretRotation > 360f) {
             turretRotation = turretRotation - 360f
@@ -203,7 +228,7 @@ class Player() {
     }
 
     def turretAntiClockwise() = {
-
+        playTurretSound()
         turretRotation -= Gdx.graphics.getDeltaTime() * rotationSpeed
         if (turretRotation > 360f) {
             turretRotation = turretRotation - 360f
@@ -239,6 +264,7 @@ class Player() {
         tankBaseSprite.getTexture.dispose
         tankTurretSprite.getTexture.dispose
         engineSound.dispose
+        turretSound.dispose
     }
 
     def setX(playerX: Float) = {
