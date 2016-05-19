@@ -4,10 +4,10 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.{Batch, Sprite}
-import com.badlogic.gdx.math.{Intersector, MathUtils, Vector2}
+import com.badlogic.gdx.math.{MathUtils}
 
 /**
-  * Created by neild on 18/05/2016.
+  * Logic, rendering and sounds for bullets.
   */
 class Bullet(xPos: Float, yPos: Float, headingDegrees: Float) {
 
@@ -22,7 +22,6 @@ class Bullet(xPos: Float, yPos: Float, headingDegrees: Float) {
     var shotSoundId: Long = 0l
 
     var bulletSprite = new Sprite(new Texture("/Users/neild/Dev/iabsm/core/src/main/resources/bullet2.png"))
-    //bulletSprite.setOrigin(bulletSprite.getWidth() / 2, bulletSprite.getHeight / 2)
     bulletSprite.setOrigin(4f, 4f)
 
     shotSound = Gdx.audio.newSound(Gdx.files.internal("/Users/neild/Dev/iabsm/core/src/main/resources/tankShot.wav"))

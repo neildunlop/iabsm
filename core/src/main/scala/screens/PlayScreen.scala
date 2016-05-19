@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.{Rectangle, Intersector}
 import com.badlogic.gdx.{Input, InputProcessor, Gdx, Screen}
 import com.badlogic.gdx.maps.tiled.{TmxMapLoader, TiledMap}
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
-import entities.{Enemy, Bullet, Player}
+import entities.{Explosion, Enemy, Bullet, Player}
 
 import scala.collection.mutable
 
@@ -22,6 +22,7 @@ class PlayScreen extends Screen with InputProcessor {
     var player: Player = null
     var enemy1: Enemy = null
     var bullets: mutable.ListBuffer[Bullet] = mutable.ListBuffer()
+    var explosion: Explosion = null
 
 
     override def hide(): Unit = {
@@ -39,7 +40,9 @@ class PlayScreen extends Screen with InputProcessor {
         map.dispose()
         renderer.dispose()
         player.dispose()
-        enemy1.dispose()
+        if(enemy1!=null) {
+            enemy1.dispose()
+        }
         bullets.foreach(_.dispose())
     }
 
@@ -91,7 +94,9 @@ class PlayScreen extends Screen with InputProcessor {
         //order that we call draw determines Z-Order
         bullets.foreach(_.draw(renderer.getSpriteBatch))
         player.draw(renderer.getSpriteBatch)
-        enemy1.draw(renderer.getSpriteBatch)
+        if(enemy1!=null) {
+            enemy1.draw(renderer.getSpriteBatch)
+        }
 
         for(bullet <- bullets) {
             if(bullet.shouldRemove) {
@@ -99,13 +104,20 @@ class PlayScreen extends Screen with InputProcessor {
                 bullets -= bullet
             }
 
-            if(Intersector.intersectRectangles(bullet.bulletSprite.getBoundingRectangle, enemy1.tankBaseSprite.getBoundingRectangle, new Rectangle())) {
-                Console.println("Enemy Hit!")
-                bullet.dispose()
-                bullets -= bullet
-
-                //just leaves a big black hole
-                //enemy1.dispose()
+            if(enemy1!=null) {
+                if (Intersector.intersectRectangles(bullet.bulletSprite.getBoundingRectangle, enemy1.tankBaseSprite.getBoundingRectangle, new Rectangle())) {
+                    explosion = new Explosion()
+                    bullet.dispose()
+                    bullets -= bullet
+                }
+            }
+        }
+        //we only create explosions when a bullet hits but we need to keep drawing the explosion until the animation finishes
+        if(explosion!=null) {
+            explosion.draw(renderer.getSpriteBatch, enemy1.tankBaseSprite.getX, enemy1.tankBaseSprite.getY)
+            if(explosion.isAnimationFinished()) {
+                explosion = null
+                enemy1 = null
             }
         }
 
