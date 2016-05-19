@@ -2,12 +2,15 @@
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" nextobjectid="1">
  <tileset firstgid="1" name="tmw_desert_spacing" tilewidth="32" tileheight="32" spacing="1" margin="1" tilecount="48" columns="8">
   <image source="tmw_desert_spacing.png" width="265" height="199"/>
-  <tile id="0">
+  <terraintypes>
+   <terrain name="New Terrain" tile="-1"/>
+  </terraintypes>
+  <tile id="0" terrain=",,,0">
    <properties>
     <property name="blocked" value=""/>
    </properties>
   </tile>
-  <tile id="1">
+  <tile id="1" terrain=",,0,0">
    <properties>
     <property name="blocked" value=""/>
    </properties>
@@ -17,27 +20,27 @@
     <property name="blocked" value=""/>
    </properties>
   </tile>
-  <tile id="8">
+  <tile id="8" terrain=",0,,0">
    <properties>
     <property name="blocked" value=""/>
    </properties>
   </tile>
-  <tile id="9">
+  <tile id="9" terrain="0,0,0,0">
    <properties>
     <property name="blocked" value=""/>
    </properties>
   </tile>
-  <tile id="10">
+  <tile id="10" terrain=",,0,">
    <properties>
     <property name="blocked" value=""/>
    </properties>
   </tile>
-  <tile id="16">
+  <tile id="16" terrain=",0,,">
    <properties>
     <property name="blocked" value=""/>
    </properties>
   </tile>
-  <tile id="17">
+  <tile id="17" terrain="0,0,0,0">
    <properties>
     <property name="blocked" value=""/>
    </properties>

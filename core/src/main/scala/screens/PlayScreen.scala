@@ -87,19 +87,20 @@ class PlayScreen extends Screen with InputProcessor {
         }
 
         Gdx.gl.glClearColor(1, 0, 0, 1);
+        //Gdx.graphics.getGL20().glClearColor( 1, 1, 1, 1 );
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
         renderer.setView(camera);
         renderer.render();
 
-        renderer.getSpriteBatch.begin()
+        renderer.getBatch.begin()
 
         //order that we call draw determines Z-Order
-        bullets.foreach(_.draw(renderer.getSpriteBatch))
-        player.draw(renderer.getSpriteBatch)
+        bullets.foreach(_.draw(renderer.getBatch))
+        player.draw(renderer.getBatch)
         if(enemy1!=null) {
-            enemy1.draw(renderer.getSpriteBatch)
+            enemy1.draw(renderer.getBatch)
         }
 
         for(bullet <- bullets) {
@@ -118,14 +119,14 @@ class PlayScreen extends Screen with InputProcessor {
         }
         //we only create explosions when a bullet hits but we need to keep drawing the explosion until the animation finishes
         if(explosion!=null) {
-            explosion.draw(renderer.getSpriteBatch, enemy1.tankBaseSprite.getX, enemy1.tankBaseSprite.getY)
+            explosion.draw(renderer.getBatch, enemy1.tankBaseSprite.getX, enemy1.tankBaseSprite.getY)
             if(explosion.isAnimationFinished()) {
                 explosion = null
                 enemy1 = null
             }
         }
 
-        renderer.getSpriteBatch.end()
+        renderer.getBatch.end()
     }
 
     override def show(): Unit = {

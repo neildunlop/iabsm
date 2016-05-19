@@ -15,8 +15,10 @@ object Settings {
     libgdxVersion := (libgdxVersion in LocalProject("all-platforms")).value,
     scalaVersion := (scalaVersion in LocalProject("all-platforms")).value,
     libraryDependencies ++= Seq(
-      "com.badlogicgames.gdx" % "gdx" % libgdxVersion.value
+        "com.badlogicgames.gdx" % "gdx" % libgdxVersion.value,
+        "com.badlogicgames.gdx" % "gdx-ai" % "1.8.0"
     ),
+
     javacOptions ++= Seq(
       "-Xlint",
       "-encoding", "UTF-8",

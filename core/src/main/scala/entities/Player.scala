@@ -1,9 +1,11 @@
 package entities
 
+import ai.EnemySteering
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.{OrthographicCamera, Texture}
 import com.badlogic.gdx.graphics.g2d.{Batch, Sprite}
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.{Gdx, Input}
 
 /**
@@ -36,6 +38,11 @@ class Player(baseSprite:Sprite, turretSprite:Sprite, startingX:Float, startingY:
 
     tankBaseSprite.setOrigin(tankBaseSprite.getWidth() / 2, tankBaseSprite.getHeight / 2)
     tankTurretSprite.setOrigin(tankTurretSprite.getWidth() / 2, tankTurretSprite.getHeight / 2)
+
+    //just to try out the steering behaviour - this gets called from update in this class
+    //and output position debug to the command line - wire it into the enemy tank if it works and use
+    //it to move the enemy tank sprite
+    val steeringBehaviour = new EnemySteering(new Vector2(tankBaseSprite.getX, tankBaseSprite.getY), true)
 
     engineSound = Gdx.audio.newSound(Gdx.files.internal("/Users/neild/Dev/iabsm/core/src/main/resources/tankEngine.wav"))
     turretSound = Gdx.audio.newSound(Gdx.files.internal("/Users/neild/Dev/iabsm/core/src/main/resources/turretSound.wav"))
@@ -282,10 +289,7 @@ class Player(baseSprite:Sprite, turretSprite:Sprite, startingX:Float, startingY:
     }
 
     def update(deltaTime: Float) = {
-
-
-
-
+        steeringBehaviour.update(deltaTime)
     }
 
 
