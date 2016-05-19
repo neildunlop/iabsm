@@ -1,7 +1,7 @@
 package entities
 
 import com.badlogic.gdx.audio.Sound
-import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.{OrthographicCamera, Texture}
 import com.badlogic.gdx.graphics.g2d.{Batch, Sprite}
 import com.badlogic.gdx.{Gdx, Input}
 
@@ -83,7 +83,7 @@ class Player(baseSprite:Sprite, turretSprite:Sprite, startingX:Float, startingY:
         case _ =>
     }
 
-    def moveLeft() = {
+    def moveLeft(camera: OrthographicCamera) = {
         playEngineSound()
         if (chassisRotation > 271f && chassisRotation < 360f || chassisRotation == 0f) {
             //top left quadrant = turn left
@@ -110,12 +110,14 @@ class Player(baseSprite:Sprite, turretSprite:Sprite, startingX:Float, startingY:
         rotateChassis(chassisRotation)
         if (chassisRotation > 269f && chassisRotation < 271f) {
             rotateChassis(270f)
-            playerX -= Gdx.graphics.getDeltaTime() * playerSpeed
+            val moveDelta = Gdx.graphics.getDeltaTime() * playerSpeed
+            playerX -= moveDelta
+            camera.translate(-moveDelta,0)
             setX(playerX)
         }
     }
 
-    def moveRight() = {
+    def moveRight(camera: OrthographicCamera) = {
         playEngineSound()
         if (chassisRotation > 270f && chassisRotation < 360f || chassisRotation == 0f) {
             //top left quadrant = turn right
@@ -143,12 +145,14 @@ class Player(baseSprite:Sprite, turretSprite:Sprite, startingX:Float, startingY:
         if (chassisRotation > 89f && chassisRotation < 91f) {
             chassisRotation = 90f
             rotateChassis(chassisRotation)
-            playerX += Gdx.graphics.getDeltaTime() * playerSpeed
+            val moveDelta = Gdx.graphics.getDeltaTime() * playerSpeed
+            playerX += moveDelta
+            camera.translate(moveDelta,0)
             setX(playerX)
         }
     }
 
-    def moveUp() = {
+    def moveUp(camera: OrthographicCamera) = {
         playEngineSound()
         if (chassisRotation > 270f && chassisRotation < 359f) {
             //top left quadrant = turn right
@@ -176,12 +180,14 @@ class Player(baseSprite:Sprite, turretSprite:Sprite, startingX:Float, startingY:
 
         if (chassisRotation > 359f && chassisRotation < 360f || chassisRotation >= 0f && chassisRotation < 1f) {
             rotateChassis(0f)
-            playerY += Gdx.graphics.getDeltaTime() * playerSpeed
+            val moveDelta = Gdx.graphics.getDeltaTime() * playerSpeed
+            playerY += moveDelta
+            camera.translate(0,moveDelta)
             setY(playerY)
         }
     }
 
-    def moveDown() = {
+    def moveDown(camera: OrthographicCamera) = {
         playEngineSound()
         if (chassisRotation > 270f && chassisRotation <= 360f) {
             //top left quadrant = turn left
@@ -210,7 +216,9 @@ class Player(baseSprite:Sprite, turretSprite:Sprite, startingX:Float, startingY:
         if (chassisRotation > 179f && chassisRotation < 181f) {
             chassisRotation = 180f
             rotateChassis(chassisRotation)
-            playerY -= Gdx.graphics.getDeltaTime() * playerSpeed
+            val moveDelta = Gdx.graphics.getDeltaTime() * playerSpeed
+            playerY -= moveDelta
+            camera.translate(0,-moveDelta)
             setY(playerY)
         }
     }

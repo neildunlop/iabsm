@@ -60,16 +60,20 @@ class PlayScreen extends Screen with InputProcessor {
     override def render(delta: Float): Unit = {
 
         if(Gdx.input.isKeyPressed(Input.Keys.A)) {
-            player.moveLeft()
+            player.moveLeft(camera)
+            //camera.translate(-32,0)
         }
         if(Gdx.input.isKeyPressed(Input.Keys.D)) {
-            player.moveRight()
+            player.moveRight(camera)
+            //camera.translate(32,0)
         }
         if(Gdx.input.isKeyPressed(Input.Keys.S)) {
-            player.moveDown()
+            player.moveDown(camera)
+            //camera.translate(0,32)
         }
         if(Gdx.input.isKeyPressed(Input.Keys.W)) {
-            player.moveUp()
+            player.moveUp(camera)
+            //camera.translate(0,-32)
         }
 
         if(Gdx.input.isKeyPressed(Input.Keys.L)) {
