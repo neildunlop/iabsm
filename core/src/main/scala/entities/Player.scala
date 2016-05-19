@@ -3,12 +3,13 @@ package entities
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.{OrthographicCamera, Texture}
 import com.badlogic.gdx.graphics.g2d.{Batch, Sprite}
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer
 import com.badlogic.gdx.{Gdx, Input}
 
 /**
   * We may want to split the logic for the player from the Sprite which is what we show on screen.
   */
-class Player(baseSprite:Sprite, turretSprite:Sprite, startingX:Float, startingY:Float) {
+class Player(baseSprite:Sprite, turretSprite:Sprite, startingX:Float, startingY:Float, mapCollisionLayer:TiledMapTileLayer) {
 
     var playerSpeed: Float = 60.0f
     // pixels per second.
@@ -30,8 +31,9 @@ class Player(baseSprite:Sprite, turretSprite:Sprite, startingX:Float, startingY:
     var tankBaseSprite: Sprite = baseSprite
     var tankTurretSprite: Sprite = turretSprite
 
-//    tankBaseSprite = new Sprite(new Texture("/Users/neild/Dev/iabsm/core/src/main/resources/tankBaseGrey.png"))
-//    tankTurretSprite = new Sprite(new Texture("/Users/neild/Dev/iabsm/core/src/main/resources/tankTurretGrey.png"))
+    var collisionLayer:TiledMapTileLayer = null
+
+
     tankBaseSprite.setOrigin(tankBaseSprite.getWidth() / 2, tankBaseSprite.getHeight / 2)
     tankTurretSprite.setOrigin(tankTurretSprite.getWidth() / 2, tankTurretSprite.getHeight / 2)
 
@@ -43,6 +45,12 @@ class Player(baseSprite:Sprite, turretSprite:Sprite, startingX:Float, startingY:
 
     tankTurretSprite.setX(startingX)
     tankTurretSprite.setY(startingY)
+
+    collisionLayer = mapCollisionLayer
+
+    val tileWidth = collisionLayer.getTileWidth
+    val tileHeight = collisionLayer.getTileHeight
+
 
     def playEngineSound() = {
         if (!engineSoundPlaying) {
@@ -114,6 +122,12 @@ class Player(baseSprite:Sprite, turretSprite:Sprite, startingX:Float, startingY:
             playerX -= moveDelta
             camera.translate(-moveDelta,0)
             setX(playerX)
+            if(collision()) {
+                //undo the move
+                playerX += moveDelta
+                camera.translate(moveDelta,0)
+                setX(playerX)
+            }
         }
     }
 
@@ -149,6 +163,12 @@ class Player(baseSprite:Sprite, turretSprite:Sprite, startingX:Float, startingY:
             playerX += moveDelta
             camera.translate(moveDelta,0)
             setX(playerX)
+            if(collision()) {
+                //undo the move
+                playerX -= moveDelta
+                camera.translate(-moveDelta,0)
+                setX(playerX)
+            }
         }
     }
 
@@ -184,6 +204,12 @@ class Player(baseSprite:Sprite, turretSprite:Sprite, startingX:Float, startingY:
             playerY += moveDelta
             camera.translate(0,moveDelta)
             setY(playerY)
+            if(collision()) {
+                //undo the move
+                playerY -= moveDelta
+                camera.translate(0,-moveDelta)
+                setY(playerY)
+            }
         }
     }
 
@@ -220,6 +246,12 @@ class Player(baseSprite:Sprite, turretSprite:Sprite, startingX:Float, startingY:
             playerY -= moveDelta
             camera.translate(0,-moveDelta)
             setY(playerY)
+            if(collision()) {
+                //undo the move
+                playerY = moveDelta
+                camera.translate(0,moveDelta)
+                setY(playerY)
+            }
         }
     }
 
@@ -241,7 +273,18 @@ class Player(baseSprite:Sprite, turretSprite:Sprite, startingX:Float, startingY:
         rotateTurret(turretRotation)
     }
 
+
+
+    def collision():Boolean = {
+        collisionLayer.getCell((tankBaseSprite.getX/tileWidth).toInt, (tankBaseSprite.getY/tileHeight).toInt)
+            .getTile.getProperties
+            .containsKey("blocked")
+    }
+
     def update(deltaTime: Float) = {
+
+
+
 
     }
 

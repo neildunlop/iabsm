@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.{Texture, OrthographicCamera, GL20}
 import com.badlogic.gdx.math.{Rectangle, Intersector}
 import com.badlogic.gdx.{Input, InputProcessor, Gdx, Screen}
-import com.badlogic.gdx.maps.tiled.{TmxMapLoader, TiledMap}
+import com.badlogic.gdx.maps.tiled.{TiledMapTileLayer, TmxMapLoader, TiledMap}
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import entities.{Explosion, Enemy, Bullet, Player}
 
@@ -148,8 +148,8 @@ class PlayScreen extends Screen with InputProcessor {
         val enemyTurretSprite = new Sprite(new Texture("/Users/neild/Dev/iabsm/core/src/main/resources/tankTurretGrey.png"))
 
 
-        player = new Player(playerBaseSprite, playerTurretSprite, 500, 500)
-        enemy1 = new Enemy(enemyBaseSprite, enemyTurretSprite, 400, 400)
+        player = new Player(playerBaseSprite, playerTurretSprite, 500, 50, map.getLayers.get(0).asInstanceOf[TiledMapTileLayer])
+        enemy1 = new Enemy(enemyBaseSprite, enemyTurretSprite, 400, 400, map.getLayers.get(0).asInstanceOf[TiledMapTileLayer])
     }
 
     override def resume(): Unit = {
